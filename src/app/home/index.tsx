@@ -9,7 +9,22 @@ import { Flight } from "@components/flight";
 import { colors } from "@styles/colors";
 import { Info } from "@components/info";
 
+import React, { useState, useEffect } from "react";
+
 export function Home() {
+  const [randomValue, setRandomValue] = useState<string | null>(null);
+
+  // Função para gerar um número aleatório
+  const generateRandomNumber = () => {
+    return Math.floor(Math.random() * 1000000000).toString(); // Gera um número aleatório entre 0 e 999999999
+  };
+
+  // Atualiza o valor do QRCode quando o componente é montado ou quando a página é atualizada
+  useEffect(() => {
+    const newValue = generateRandomNumber();
+    setRandomValue(newValue);
+  }, []);
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -69,7 +84,7 @@ export function Home() {
               <Info label="Portão" value="13" />
             </View>
           </View>
-          <QRCode value="1234567890" size={130} />
+          {randomValue ? <QRCode value={randomValue} size={130} /> : null}
         </View>
       </View>
     </View>
