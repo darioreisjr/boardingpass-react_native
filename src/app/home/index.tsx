@@ -13,6 +13,8 @@ import React, { useState, useEffect } from "react";
 
 export function Home() {
   const [randomValue, setRandomValue] = useState<string | null>(null);
+  const [terminalValue, setTerminalValue] = useState<number | null>(null);
+  const [portaoValue, setPortaoValue] = useState<number | null>(null);
 
   // Função para gerar um número aleatório
   const generateRandomNumber = () => {
@@ -23,6 +25,19 @@ export function Home() {
   useEffect(() => {
     const newValue = generateRandomNumber();
     setRandomValue(newValue);
+  }, []);
+
+  // Função para gerar um número aleatório
+  const generateRandomNumber2 = (max: number) => {
+    return Math.floor(Math.random() * max) + 1; // Gera um número aleatório entre 1 e o valor máximo
+  };
+
+  // Atualiza os valores de Terminal e Portão quando o componente é montado
+  useEffect(() => {
+    const terminal = generateRandomNumber2(10); // Limite para valor de Terminal
+    const portao = generateRandomNumber2(50); // Limite para valor de Portão
+    setTerminalValue(terminal);
+    setPortaoValue(portao);
   }, []);
 
   return (
@@ -80,8 +95,12 @@ export function Home() {
               <Info label="Assento" value="73F" />
             </View>
             <View style={styles.inline}>
-              <Info label="Terminal" value="5" />
-              <Info label="Portão" value="13" />
+              {terminalValue !== null && portaoValue !== null ? (
+                <>
+                  <Info label="Terminal" value={terminalValue.toString()} />
+                  <Info label="Portão" value={portaoValue.toString()} />
+                </>
+              ) : null}
             </View>
           </View>
           {randomValue ? <QRCode value={randomValue} size={130} /> : null}
